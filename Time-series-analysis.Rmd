@@ -1,7 +1,8 @@
 ---
 title: "Time series Analysis"
 output:
-  output: github_document
+  output: html_document 
+  add keep_md: true
 ---
 
 ```{r setup, include=FALSE}
