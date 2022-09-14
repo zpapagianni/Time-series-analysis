@@ -7,7 +7,7 @@ output:
 ---
 ## Loading packages
 
-```{r setup, include=FALSE}
+```{r setup,message=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 library(MASS)
 library(ggplot2)
@@ -20,24 +20,27 @@ We begin by loading our data and convert it to a time series using the ``as.ts()
 ```{r,echo=FALSE}
 filepath="~/Desktop/MSc-Imperial/Term 2/Data visualisation/Assessments/Assessment_2/time-series.csv"
 ```
-### Import Dataset and plot
+### Import Dataset
 ```{r,out.width='75%',fig.align = 'center'}
+#Load dataset
 ts <- read_csv(filepath,show_col_types = FALSE)
-tsData<-as.ts(ts) ##convert to time series data
+##convert to time series data
+tsData<-as.ts(ts) 
+#Plot time series
 plot.ts(tsData)
 grid(nx = NA,
      ny = NULL,
      lty = 2, col = "gray", lwd = 2)
 ```
-It's very hard to distinguish if there is a trend or seasonality by looking at the time series graph.We proceed by looking at the ACF plot.
+It's very hard to distinguish if there is a trend or seasonality by looking at the time series graph.We proceed by doing an autocorrelation analysis and looking at the resulting ACF plot.
 ```{r,out.width='75%',fig.align = 'center'}
+#ACF plot
 acf(tsData) # autocorrelation
 ```
 We can observe that there is a trend and seasonal component in our time series.The slow decrease in the ACF as the lags increase is due to the trend component, while the periodic sinoid shape is due the seasonality.
 
-## Parameters for the linear trend component
+## Parameters of the linear trend component
 We fit a linear model by regressing our series ``ts`` against time and plot the regression line. The upward trend becomes clearer in the new plot. 
-
 ```{r,out.width='65%',fig.align = 'center'}
 ##Linear regression
 trModel<- lm(tsData ~ time(tsData))
@@ -66,7 +69,6 @@ The parameters for the linear trend component are:
 ##Removing the trend
 knitr::kable(trModel$coefficients, "simple")
 ```
-
 
 ## Seasonal component
 
@@ -108,11 +110,7 @@ After removing the trending and seasonal components, we're going to test if the 
 ```{r}
 adf.test(diff.ts, k=1)
 ```
-We see that the p-value is (smaller than) 0.01, which suggests that we can reject the null hypothesis and conclude that the time series is stationary.However, we can't claim that this is evidence in support of a particular alternative hypothesis (e.g. stationarity)
-
-## Suitability of test
+We can observe that the p-value is (smaller than) 0.01, which suggests that we can reject the null hypothesis and conclude that the time series is stationary.However, we can't claim that this is evidence in support of a particular alternative hypothesis (e.g. stationarity).
 The Dickey–Fuller test that we used above is used to test the null hypothesis, which is that a unit root is present in an auto regressive time series model.However, it can not detect other forms of nonstationarity as the alternative hypothesis is different depending on which version of the test is used.  
-Our time series is clearly seasonal and more complicated than is captured by a simple AR(1) model. A more appropriate test would be the augmented Dickey Fuller test which was developed for general ARMA(p, q) models
-with unknown orders. This seems to be closer to our case and thus more appropriate. 
-
+Our time series is clearly seasonal and more complicated than is captured by a simple AR(1) model. A more appropriate test would be the augmented Dickey Fuller test which was developed for general ARMA(p, q) models with unknown orders. This seems to be closer to our case and thus more appropriate. 
 
