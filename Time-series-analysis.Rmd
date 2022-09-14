@@ -15,16 +15,12 @@ library(tidyverse)
 library(tseries)
 ```
 
-<<<<<<< HEAD
+```{r,include=FALSE}
+filepath='/Users/papagiannizoe/Desktop/Git-projects/Time-series-analysis/time-series.csv'
+```
 ## Data Preparation
 We begin by loading our data and convert it to a time series using the ``as.ts()`` function. Then we plot our data.
-=======
-## Preparation of the data
-We begin by loading our data and converting it to a time series using the ``as.ts()`` function. Then we plot our data.
->>>>>>> 10c5854fccc995fe51f34a9d8f6989ec7c6d55c9
-```{r,echo=FALSE}
-filepath="~/Desktop/MSc-Imperial/Term 2/Data visualisation/Assessments/Assessment_2/time-series.csv"
-```
+
 ### Import Dataset
 ```{r,out.width='75%',fig.align = 'center'}
 #Load dataset
@@ -44,7 +40,7 @@ acf(tsData) # autocorrelation
 ```
 We can observe that there is a trend and seasonal component in our time series.The slow decrease in the ACF as the lags increase is due to the trend component, while the periodic sinoid shape is due the seasonality.
 
-## Parameters of the linear trend component
+## Parameters of linear trend component 
 We fit a linear model by regressing our series ``ts`` against time and plot the regression line. The upward trend becomes clearer in the new plot. 
 ```{r,out.width='65%',fig.align = 'center'}
 ##Linear regression
@@ -92,16 +88,19 @@ spec.df <- data.frame(spec=spec$spec, freq=spec$freq)
 frequency<-spec$freq[spec$spec==max(spec$spec)]
 period<-round(1/frequency)
 ```
+
 ```{r,echo=FALSE}
 df <- data.frame (frequency,period)
-knitr::kable(df, "pipe")
+knitr::kable(df, "simple")
 ```
+
 We determine that there is a period of 28 lags which we will use to remove the seasonal component from the original data. In order to do this we compute the difference $y_t-S_t$, where $S_t=S_{28}$. 
 ```{r}
 diff.ts=diff(d.data, lag=T)  #lag difference 
 ```
 
 ```{r,echo=FALSE,out.width='55%',fig.align = 'center'}
+#Autocorrelation and partial correlation plot
 acf(diff.ts)
 pacf(diff.ts)
 ```
@@ -113,19 +112,10 @@ The spikes in the PACF around lag 14 and 28 combined with spikes around the same
 After removing the trending and seasonal components, we're going to test if the time series is stationary.We're using a lag order of k=1,for the simple Dickey-Fuller test. 
 
 ```{r}
+#Augmented Dickey-Fuller Test
 adf.test(diff.ts, k=1)
 ```
-<<<<<<< HEAD
 We can observe that the p-value is (smaller than) 0.01, which suggests that we can reject the null hypothesis and conclude that the time series is stationary.However, we can't claim that this is evidence in support of a particular alternative hypothesis (e.g. stationarity).
 The Dickey–Fuller test that we used above is used to test the null hypothesis, which is that a unit root is present in an auto regressive time series model.However, it can not detect other forms of nonstationarity as the alternative hypothesis is different depending on which version of the test is used.  
 Our time series is clearly seasonal and more complicated than is captured by a simple AR(1) model. A more appropriate test would be the augmented Dickey Fuller test which was developed for general ARMA(p, q) models with unknown orders. This seems to be closer to our case and thus more appropriate. 
-=======
-We see that the p-value is (smaller than) 0.01, which suggests that we can reject the null hypothesis and conclude that the time series is stationary.However, we can't claim that this is evidence in support of a particular alternative hypothesis (e.g. stationarity)
-
-## Suitability of test
-The Dickey–Fuller test that we used above is used to test the null hypothesis, which is that a unit root is present in an autoregressive time series model.However, it can not detect other forms of nonstationarity as the alternative hypothesis is different depending on which version of the test is used.  
-Our time series is clearly seasonal and more complicated than what is captured by a simple AR(1) model. A more appropriate test would be the augmented Dickey Fuller test which was developed for general ARMA(p, q) models
-with unknown orders. This seems to be closer to our case and thus more appropriate. 
-
->>>>>>> 10c5854fccc995fe51f34a9d8f6989ec7c6d55c9
 

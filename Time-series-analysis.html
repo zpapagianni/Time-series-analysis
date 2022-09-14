@@ -400,8 +400,8 @@ trend component, while the periodic sinoid shape is due the
 seasonality.</p>
 </div>
 </div>
-<div id="parameters-of-the-linear-trend-component" class="section level2">
-<h2>Parameters of the linear trend component</h2>
+<div id="parameters-of-linear-trend-component" class="section level2">
+<h2>Parameters of linear trend component</h2>
 <p>We fit a linear model by regressing our series <code>ts</code>
 against time and plot the regression line. The upward trend becomes
 clearer in the new plot.</p>
@@ -508,7 +508,8 @@ seasonal AR.</p>
 <p>After removing the trending and seasonal components, we’re going to
 test if the time series is stationary.We’re using a lag order of k=1,for
 the simple Dickey-Fuller test.</p>
-<pre class="r"><code>adf.test(diff.ts, k=1)</code></pre>
+<pre class="r"><code>#Augmented Dickey-Fuller Test
+adf.test(diff.ts, k=1)</code></pre>
 <pre><code>## Warning in adf.test(diff.ts, k = 1): p-value smaller than printed p-value</code></pre>
 <pre><code>## 
 ##  Augmented Dickey-Fuller Test
