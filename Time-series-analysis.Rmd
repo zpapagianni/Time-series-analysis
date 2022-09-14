@@ -3,7 +3,9 @@ title: "Time series Analysis"
 output:
   output: html_document 
   add keep_md: true
+  toc: true
 ---
+## Loading packages
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
@@ -11,15 +13,14 @@ library(MASS)
 library(ggplot2)
 library(tidyverse) 
 library(tseries)
-
 ```
 
-## Preparation of the data
+## Data Preparation
 We begin by loading our data and convert it to a time series using the ``as.ts()`` function. Then we plot our data.
 ```{r,echo=FALSE}
 filepath="~/Desktop/MSc-Imperial/Term 2/Data visualisation/Assessments/Assessment_2/time-series.csv"
 ```
-
+### Import Dataset and plot
 ```{r,out.width='75%',fig.align = 'center'}
 ts <- read_csv(filepath,show_col_types = FALSE)
 tsData<-as.ts(ts) ##convert to time series data
@@ -67,7 +68,7 @@ knitr::kable(trModel$coefficients, "simple")
 ```
 
 
-## Seasonal componen
+## Seasonal component
 
 To interpret the seasonality and determine the frequency, we plot the ACF and PACF after removing the linear trend.
 ```{r,echo=FALSE,out.width='65%',fig.align = 'center'}
@@ -110,7 +111,7 @@ adf.test(diff.ts, k=1)
 We see that the p-value is (smaller than) 0.01, which suggests that we can reject the null hypothesis and conclude that the time series is stationary.However, we can't claim that this is evidence in support of a particular alternative hypothesis (e.g. stationarity)
 
 ## Suitability of test
-The Dickey–Fuller test that we used above is used to test the null hypothesis, which is that a unit root is present in an autoregressive time series model.However, it can not detect other forms of nonstationarity as the alternative hypothesis is different depending on which version of the test is used.  
+The Dickey–Fuller test that we used above is used to test the null hypothesis, which is that a unit root is present in an auto regressive time series model.However, it can not detect other forms of nonstationarity as the alternative hypothesis is different depending on which version of the test is used.  
 Our time series is clearly seasonal and more complicated than is captured by a simple AR(1) model. A more appropriate test would be the augmented Dickey Fuller test which was developed for general ARMA(p, q) models
 with unknown orders. This seems to be closer to our case and thus more appropriate. 
 

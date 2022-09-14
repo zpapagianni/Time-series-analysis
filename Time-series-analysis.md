@@ -71,7 +71,7 @@ The parameters for the linear trend component are:
 | (Intercept)  | -0.9175246 |
 | time(tsData) |  0.0010170 |
 
-## Seasonal componen
+## Seasonal component
 
 To interpret the seasonality and determine the frequency, we plot the
 ACF and PACF after removing the linear trend.
