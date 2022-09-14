@@ -20,10 +20,10 @@ Here are the different notebooks:
 ## Dependencies
 
 Choose the latest versions of any of the dependencies below:
-* [MASS]
-* [ggplot2]
-* [tidyverse]
-* [tseries]
+* MASS
+* ggplot2
+* tidyverse
+* tseries
 
 ## License
 
